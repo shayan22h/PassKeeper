@@ -14,7 +14,8 @@ INCLUDES = -I/usr/local/include
 LIBS = -L/usr/local/lib -ltinyxml2
 
 # Source files
-SRCS = ../main.cpp
+SRCS = ../main.cpp \
+       ../Authenticator/Authenticator.cpp
 
 # Object files
 OBJS = $(patsubst ../%.cpp,$(OUTPUT_DIR)/%.o,$(SRCS))
@@ -34,7 +35,7 @@ $(EXEC): $(OBJS)
 
 # Rule to compile source files into object files
 $(OUTPUT_DIR)/%.o: ../%.cpp
-	@mkdir -p $(OUTPUT_DIR)
+	@mkdir -p $(dir $@)
 	@echo "Compiling $< to $@"
 	$(CXX) $(CXXFLAGS) $(INCLUDES) -c $< -o $@
 	@echo "Finished compiling $<"
