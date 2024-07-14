@@ -15,7 +15,9 @@ LIBS = -L/usr/local/lib -ltinyxml2
 
 # Source files
 SRCS = ../main.cpp \
-       ../Authenticator/Authenticator.cpp
+       ../Authenticator/Authenticator.cpp \
+	   ../App/App.cpp \
+	   ../UI/UI.cpp 
 
 # Object files
 OBJS = $(patsubst ../%.cpp,$(OUTPUT_DIR)/%.o,$(SRCS))
