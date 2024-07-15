@@ -15,3 +15,5 @@ tinyxml2 Lib is used do the following steps to add it into your project </br>
 <li> sudo make install </li>
 </ol>
 the lib should be added to usr/local/lib
+
+## Architecture

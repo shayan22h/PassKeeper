@@ -9,8 +9,11 @@ using namespace std;
 int main() {
     Authenticator AuthHandler(2);
     App ApplicationHandler;
-    UI UIHandler(ApplicationHandler);
+    UI UIHandler;
 
+    ApplicationHandler.SetUI(&UIHandler);
+    UIHandler.SetApp(&ApplicationHandler);
+    
     std::thread UIthread(&UI::UI_task,&UIHandler);
     std::thread Appthread(&App::App_task,&ApplicationHandler);
 

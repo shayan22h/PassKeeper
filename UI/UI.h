@@ -6,17 +6,18 @@
 #include <condition_variable>
 #include <string>
 
-#include "../App/App.h"
+class App; // FW declaration of App class
 
 class UI{
     public:
-        UI(App& _application);
+        UI();
         ~UI();
         void UI_task(void);
+        void SetApp(App* _ptrToAppObj);
 
 
     private:
-        App& application;
+        App* PtrToAppObj;
         void Poll_Input_task(); // Independent Task polls for input
         void UI_Send_MsgToApp(const std::string& _str);
 };

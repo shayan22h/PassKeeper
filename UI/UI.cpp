@@ -2,8 +2,9 @@
 #include <iostream>
 #include <thread>
 #include <chrono>
+#include "../App/App.h"
 
-UI::UI(App& _application):application(_application)
+UI::UI() : PtrToAppObj(nullptr)
 {
     // constructor
 }
@@ -11,6 +12,11 @@ UI::UI(App& _application):application(_application)
 UI::~UI()
 {
     //constructor
+}
+
+void UI::SetApp(App* _ptrToAppObj)
+{
+    this->PtrToAppObj = _ptrToAppObj;
 }
 void UI::UI_task(void)
 {
@@ -38,7 +44,15 @@ void UI::Poll_Input_task(void)
 }
 void UI::UI_Send_MsgToApp(const std::string& _str)
 {
-    // Print the string is 
-    std::cout << "Sending  " << _str << " to Application" << std::endl;
-    application.Receive_Msg(_str);
+
+    if (PtrToAppObj)
+    {
+        std::cout << "Sending  " << _str << " to Application" << std::endl;
+        PtrToAppObj->Receive_Msg(_str);
+    }
+    else
+    {
+        std::cout << "No App Interface for UI Component " << std::endl;
+    }
+    
 }
