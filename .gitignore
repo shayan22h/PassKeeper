@@ -1,0 +1,5 @@
+#Ignore the OutPut Directory
+/Build/OutPut/
+
+#Ignore .vscode
+/.vscode/
