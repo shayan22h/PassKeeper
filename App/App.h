@@ -26,7 +26,8 @@ class App{
         mutex mtx;
         condition_variable cv;
         /** Functions **/
-        void process_event(const string& msg);
+        void process_event(const string& _msg);
+        void App_send_msg(const string& _msg);
 
 };
 #endif // APP_H

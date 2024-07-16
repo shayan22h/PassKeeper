@@ -4,6 +4,11 @@ CXX = g++
 # Compiler flags
 CXXFLAGS = -std=c++11 -Wall
 
+#Define Debug Flag
+ifdef DEBUG
+CXXFLAGS += -DDEBUG
+endif
+
 # Define directories
 OUTPUT_DIR = ./Output
 
