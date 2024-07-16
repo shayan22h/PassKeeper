@@ -1,5 +1,5 @@
-#Ignore the OutPut Directory
-/Build/OutPut/
+#Ignore the Output Directory
+/Build/Output/
 
 #Ignore .vscode
 /.vscode/
