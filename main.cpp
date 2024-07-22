@@ -7,9 +7,10 @@
 #include "UI/UI.h"
 using namespace std;
 int main() {
-    Authenticator AuthHandler(2);
+
     App ApplicationHandler;
     UI UIHandler;
+    Authenticator AuthHandler(2,ApplicationHandler);
 
     ApplicationHandler.SetUI(&UIHandler);
     UIHandler.SetApp(&ApplicationHandler);

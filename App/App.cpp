@@ -3,9 +3,18 @@
 
 #include "../UI/UI.h"
 
+#define MAX_NO_OF_SUBSCRIBERS 5
+
 App::App() : PtrToUIObj(nullptr)
 {
- 
+    this->evenId_Cnt = 0;
+    //TODO Change the Tbl Size
+    for (uint8_t i = 0; i < 5;i++)
+    {
+        this->eventTabl[i].PtrToStr = nullptr;
+        this->eventTabl[i].event_id = 0;
+        this->eventTabl[i].callback = nullptr;
+    }
 }
 App::~App()
 {
@@ -23,8 +32,26 @@ void App::process_event(const string& _msg)
     {
         exit(0);
     }
+    uint8_t i = 0xFF;
+    for (i = 0; i < MAX_NO_OF_SUBSCRIBERS; i++) 
+    {
+        if (eventTabl[i].PtrToStr && _msg == *(eventTabl[i].PtrToStr) && eventTabl[i].callback) 
+        {
+            // Execute the callback function associated with this event
+            eventTabl[i].callback(_msg);
+            #ifdef DEBUG
+            cout<< "[App Task] Match found in processing event -> ID:  " << i << endl;
+            #endif
+            break;
+        }
+    }
+    if (i == MAX_NO_OF_SUBSCRIBERS)
+    {
+        #ifdef DEBUG
+        cout<< "[App Task] No Match found in Processing the MSG " << endl;
+        #endif
+    }
 }
-
 /*
 *   @brief: App to send the msg to UI 
 *   @param[in]: _msg  string response msg to UI
@@ -94,4 +121,25 @@ void App::Receive_Msg(const string& msg)
     cv.notify_one(); // Notify one waiting thread
 }
 
+uint8_t App::Subscribe_To_App_Event(const string& _msg, 
+        function<void(const string&)> _callback)
+{
+#ifdef DEBUG
+    cout<< "[User Task] SubScription " << endl;
+#endif
+    uint8_t event_id = 0;
+    if (evenId_Cnt < MAX_NO_OF_SUBSCRIBERS)
+    {
+        evenId_Cnt++;
+        Event_table_t& entry = eventTabl[evenId_Cnt]; 
+        entry.event_id = evenId_Cnt;
+        entry.callback = _callback;
+        entry.PtrToStr = &_msg;
+    
+        #ifdef DEBUG
+        cout<< "[User Task] SubScription succes " << endl;
+        #endif
+    }
 
+    return event_id;
+}
