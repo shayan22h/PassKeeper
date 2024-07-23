@@ -1,16 +1,16 @@
 #include <iostream>
 #include <string>
 
-#include "../App/App.h"
+#include "../PassKeeper/PassKeeper.h"
 using namespace std;
 
 class Authenticator{
     public:
     ~Authenticator();
-    Authenticator(int _typeOfAuthentication, App& _refToApp);
-    void ProcessAuthentication(void);
+    Authenticator(int _typeOfAuthentication, PassKeeper& _refToPassKeeper);
+    Event_Status ProcessAuthentication(void);
     
     private:
     int typeOfAuthentication;
-    App& appRef;
+    PassKeeper& PasskeeperRefObj;
 };

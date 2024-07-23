@@ -1,7 +1,7 @@
 #include "Authenticator.h"
 
-Authenticator::Authenticator(int _typeOfAuthentication, App& _appRef): 
-typeOfAuthentication(_typeOfAuthentication),appRef(_appRef)
+Authenticator::Authenticator(int _typeOfAuthentication, PassKeeper& _refToPassKeeper): 
+typeOfAuthentication(_typeOfAuthentication),PasskeeperRefObj(_refToPassKeeper)
 {
     // Constructor 
 
@@ -10,8 +10,9 @@ typeOfAuthentication(_typeOfAuthentication),appRef(_appRef)
     string auth_message = "verify";
 
     // Register callback for authentication event
-    event_id = appRef.Subscribe_To_App_Event(auth_message, [this](const std::string& msg) {
-        this->ProcessAuthentication();
+    event_id = PasskeeperRefObj.Subscribe_To_PassKeeper(Event_Authenticate, auth_message, 
+    [this](Event_Id_t event_id ,std::string& rsp_str) {
+        return this->ProcessAuthentication();
     });
 
     if (event_id != 0xFF) {
@@ -25,7 +26,7 @@ Authenticator::~Authenticator()
 {
 
 }
-void Authenticator::ProcessAuthentication()
+Event_Status Authenticator::ProcessAuthentication()
 {
-
+    return status_success;
 }
