@@ -24,9 +24,8 @@ bool PassKeeper::Subscribe_To_PassKeeper(Event_Id_t _event_id, const string& _pT
 {
     bool status = false;
 #ifdef DEBUG
-    cout<< "[Pass Keeper : User Task] SubScription " << endl;
+    cout<< "[PassKeeper] SubScription Request " << endl;
 #endif
-    uint8_t event_id = 0;
     if (Event_Table_Entry_Cnt < MAX_NO_EVENTS_SUPPORTED)
     {
         
@@ -40,7 +39,7 @@ bool PassKeeper::Subscribe_To_PassKeeper(Event_Id_t _event_id, const string& _pT
         status = true;
     
         #ifdef DEBUG
-        cout<< "[User Task] SubScription succes " << endl;
+        cout<< "[PassKeeper] SubScription succes -> str is " << _pToStr << endl;
         #endif
     }
     return status;
@@ -55,7 +54,7 @@ void PassKeeper::AppCenter_FW_msg_To_PassKeeper(const string& _refToReq,
         exit(0);
     }
     #ifdef DEBUG
-    cout<< "[Pass Keeper] Processing the MSG : " << _refToReq << endl;
+    cout<< "[Pass Keeper] Processing the MSG :---------- " << _refToReq << endl;
     #endif
     Event_Status status = status_match_not_found;
 
@@ -73,7 +72,7 @@ void PassKeeper::AppCenter_FW_msg_To_PassKeeper(const string& _refToReq,
         #ifdef DEBUG
         cout<< "[Pass Keeper] No matching event found: " <<  endl;
         #endif
-        _refToResp = "No matching event found";
+        _refToResp = "Invalid Request";
     }
     
 }

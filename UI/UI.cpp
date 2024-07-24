@@ -76,6 +76,7 @@ void UI::UI_task(void)
             #ifdef DEBUG
             cout<< "[UI TASK] MSG Received from App : " << msg << endl;
             #endif
+            cout<< " Response From App : " << msg << endl;
             lock.lock();
         }
     }
