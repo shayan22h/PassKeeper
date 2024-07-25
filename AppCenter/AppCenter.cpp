@@ -1,55 +1,55 @@
-#include "App.h"
+#include "AppCenter.h"
 #include <iostream>
 
 #include "../PassKeeper/PassKeeper.h"
 #include "../UI/UI.h"
 
 
-App::App() : PtrToPassKeeperAppObj(nullptr), PtrToUIObj(nullptr) 
+AppCenter::AppCenter() : PtrToPassKeeperAppObj(nullptr), PtrToUIObj(nullptr) 
 {
 
 }
-App::~App()
+AppCenter::~AppCenter()
 {
     
 }
 
 /*
-*   @brief: App to send the msg to UI 
+*   @brief: AppCenter to send the msg to UI 
 *   @param[in]: _msg  string response msg to UI
 *   @return none
 */
-void App::App_send_msg(const string& _msg)
+void AppCenter::AppCenter_send_msg(const string& _msg)
 {
     if (PtrToUIObj)
     {
         #ifdef DEBUG
-        cout<< "[App Task] App Sends msg " << _msg << " to UI "  << endl;
+        cout<< "[AppCenter Task] AppCenter Sends msg " << _msg << " to UI "  << endl;
         #endif
         PtrToUIObj->UI_Receive_MSG(_msg);
     }
     else
     {
         #ifdef DEBUG
-        cout<< "[App Task] Panic UI Comp is not hooked " << endl;
+        cout<< "[AppCenter Task] Panic UI Comp is not hooked " << endl;
         #endif
     }
 }
 
-void App::SetPassKeeper(PassKeeper* _ptrToPassKeeperAppObj)
+void AppCenter::SetPassKeeper(PassKeeper* _ptrToPassKeeperAppObj)
 {
     this->PtrToPassKeeperAppObj = _ptrToPassKeeperAppObj;
 }
-void App::SetUI(UI* _ptrToUIObj)
+void AppCenter::SetUI(UI* _ptrToUIObj)
 {
     this->PtrToUIObj = _ptrToUIObj;
 }
 
 /*
-*   @brief: Application Task function polls waits to receive a message
+*   @brief: AppCenter Task function polls waits to receive a message
 *            from the UI to prefrom processing
 */
-void App::App_task()
+void AppCenter::App_task()
 {
     while (true)
     {
@@ -63,7 +63,7 @@ void App::App_task()
             lock.unlock(); // Unlock the mutex to allow other threads to access the queue
 
             #ifdef DEBUG
-            cout<< "[App Task] Processing the MSG : " << msg << endl;
+            cout<< "[AppCenter Task] Processing the MSG : " << msg << endl;
             #endif
             
             string response = "Application Error ";
@@ -72,21 +72,21 @@ void App::App_task()
                 PtrToPassKeeperAppObj->AppCenter_FW_msg_To_PassKeeper(msg,response);
             }
 
-            this->App_send_msg(response);
+            this->AppCenter_send_msg(response);
             lock.lock(); // Re-lock the mutex before the next iteration
         }
     }
 }
 
 /*
-*   @brief: to be called by UI component so App receives the msg
+*   @brief: to be called by UI component so AppCenter receives the msg
 *   @param[in]: _msg  string message from UI
 *   @return none
 */
-void App::Receive_Msg(const string& msg)
+void AppCenter::Receive_Msg(const string& msg)
 {
     #ifdef DEBUG
-    cout<< "[Poll_Input_task] MSG placed in App MSG Queue " << endl;
+    cout<< "[Poll_Input_task] MSG placed in AppCenter MSG Queue " << endl;
     #endif
     lock_guard<mutex> lock(mtx); // Lock the mutex
     messageQueue.push(msg); // Add the message to the queue

@@ -2,7 +2,7 @@
 #include <iostream>
 #include <thread>
 #include <chrono>
-#include "../App/App.h"
+#include "../AppCenter/AppCenter.h"
 
 UI::UI() : PtrToAppObj(nullptr)
 {
@@ -16,7 +16,7 @@ UI::~UI()
 
 /*
 *   @brief: Independent task polls every 100ms for a msg from user
-            and then send the msg to App Comp
+            and then send the msg to AppCenter Comp
 */
 void UI::Poll_Input_task(void)
 {
@@ -33,8 +33,8 @@ void UI::Poll_Input_task(void)
 }
 
 /*
-*   @brief: UI to send the msg to App 
-*   @param[in]: _msg  string  msg to App
+*   @brief: UI to send the msg to AppCenter 
+*   @param[in]: _msg  string  msg to AppCenter
 *   @return none
 */
 void UI::UI_send_msg(const std::string& _msg)
@@ -43,21 +43,21 @@ void UI::UI_send_msg(const std::string& _msg)
     if (PtrToAppObj)
     {
         #ifdef DEBUG
-        cout<< "[Poll_Input_task] UI Sends msg "<< _msg  << "to App " << endl;
+        cout<< "[Poll_Input_task] UI Sends msg "<< _msg  << "to AppCenter " << endl;
         #endif
         PtrToAppObj->Receive_Msg(_msg);
     }
     else
     {
         #ifdef DEBUG
-        cout<< "[Poll_Input_task] Panic App Comp is not hooked " << endl;
+        cout<< "[Poll_Input_task] Panic AppCenter Comp is not hooked " << endl;
         #endif
     } 
 }
 
 /*
 *   @brief: UI task creates an indenpendent task for UI receives msg from user
-*           and then waits on receiving messages from App Component
+*           and then waits on receiving messages from AppCenter Component
 */
 void UI::UI_task(void)
 {
@@ -74,28 +74,28 @@ void UI::UI_task(void)
             ui_messageQueue.pop();
             lock.unlock();
             #ifdef DEBUG
-            cout<< "[UI TASK] MSG Received from App : " << msg << endl;
+            cout<< "[UI TASK] MSG Received from AppCenter : " << msg << endl;
             #endif
-            cout<< " Response From App : " << msg << endl;
+            cout<< " Response From AppCenter : " << msg << endl;
             lock.lock();
         }
     }
 }
 
-void UI::SetApp(App* _ptrToAppObj)
+void UI::SetApp(AppCenter* _ptrToAppObj)
 {
     this->PtrToAppObj = _ptrToAppObj;
 }
 
 /*
-*   @brief: to be called by App component so UI receives the msg
-*   @param[in]: _msg  string message from App
+*   @brief: to be called by AppCenter component so UI receives the msg
+*   @param[in]: _msg  string message from AppCenter
 *   @return none
 */
 void UI::UI_Receive_MSG(const string& msg)
 {
     #ifdef DEBUG
-    cout<< "[App TASK] MSG placed in UI MSG Queue " << endl;
+    cout<< "[AppCenter TASK] MSG placed in UI MSG Queue " << endl;
     #endif
     lock_guard<mutex> lock(ui_mtx);
     ui_messageQueue.push(msg);

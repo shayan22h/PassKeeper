@@ -7,7 +7,7 @@
 #include <string>
 
 using namespace std;
-class App; // FW declaration of App class
+class AppCenter; // FW declaration of AppCenter class
 
 class UI{
     public:
@@ -15,12 +15,12 @@ class UI{
         ~UI();
         void UI_task(void);
         void UI_Receive_MSG(const string& msg);
-        void SetApp(App* _ptrToAppObj);
+        void SetApp(AppCenter* _ptrToAppObj);
 
 
     private:
         /** Variables **/
-        App* PtrToAppObj;
+        AppCenter* PtrToAppObj;
         queue<string> ui_messageQueue;
         mutex ui_mtx;
         condition_variable ui_cv;

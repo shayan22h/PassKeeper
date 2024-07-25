@@ -15,11 +15,11 @@ using namespace std;
 
 class UI; // FW declaration of UI class
 class PassKeeper; // FW declaration PassKeeper Class
-class App{
+class AppCenter{
 
     public:
-        App();  
-        ~App(); 
+        AppCenter();  
+        ~AppCenter(); 
         void SetPassKeeper(PassKeeper* _ptrToPassKeeperAppObj);
         void SetUI(UI* _ptrToUIObj);
         void App_task();
@@ -36,7 +36,7 @@ class App{
         condition_variable cv;
 
         /** Functions **/
-        void App_send_msg(const string& _msg);
+        void AppCenter_send_msg(const string& _msg);
 
 };
 #endif // APP_H

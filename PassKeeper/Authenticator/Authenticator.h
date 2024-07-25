@@ -1,7 +1,7 @@
 #include <iostream>
 #include <string>
 
-#include "../PassKeeper/PassKeeper.h"
+#include "../PassKeeper.h"
 using namespace std;
 
 class Authenticator{

@@ -2,10 +2,10 @@
 #include <thread>
 #include <string>
 #include "tinyxml2.h"
-#include "Authenticator/Authenticator.h"
-#include "App/App.h"
+#include "AppCenter/AppCenter.h"
 #include "UI/UI.h"
 #include "PassKeeper/PassKeeper.h"
+#include "PassKeeper/Authenticator/Authenticator.h"
 using namespace std;
 int main() {
 
@@ -13,7 +13,7 @@ int main() {
     PassKeeper PassKeeper;
 
     // Create the UI Com Frame work
-    App AppCenter;
+    AppCenter AppCenter;
     UI UIHandler;
 
     // Create the Pass Keeper Application -> Components
@@ -24,7 +24,7 @@ int main() {
     UIHandler.SetApp(&AppCenter);
     
     std::thread UIthread(&UI::UI_task,&UIHandler);
-    std::thread Appthread(&App::App_task,&AppCenter);
+    std::thread Appthread(&AppCenter::App_task,&AppCenter);
 
     // Wait for threads to finish
     UIthread.join();

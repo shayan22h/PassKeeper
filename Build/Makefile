@@ -20,10 +20,10 @@ LIBS = -L/usr/local/lib -ltinyxml2
 
 # Source files
 SRCS = ../main.cpp \
-       ../Authenticator/Authenticator.cpp \
-	   ../App/App.cpp \
+	   ../AppCenter/AppCenter.cpp \
 	   ../UI/UI.cpp \
-	   ../PassKeeper/PassKeeper.cpp
+	   ../PassKeeper/PassKeeper.cpp \
+	   ../PassKeeper/Authenticator/Authenticator.cpp 
 
 # Object files
 OBJS = $(patsubst ../%.cpp,$(OUTPUT_DIR)/%.o,$(SRCS))
