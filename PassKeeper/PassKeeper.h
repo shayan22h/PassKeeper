@@ -6,6 +6,11 @@
 
 using namespace std;
 typedef enum{
+    PassKeeper_idle = 0,
+    PassKeeper_Authenticated
+}PassKeeper_state_t;
+
+typedef enum{
     Event_Invalid = 0,
     Event_Authenticate,
     Event_GetPass
@@ -14,6 +19,7 @@ typedef enum{
 typedef enum{
     status_success = 0,
     status_match_not_found,
+    stats_invalid_request,
     status_fail
 }Event_Status;
 
@@ -38,5 +44,7 @@ class PassKeeper{
     private:
     Event_Table_t Event_Table[5];
     uint8_t Event_Table_Entry_Cnt;
+    bool PassKeeper_StateMachine_Handler(Event_Id_t _event_id);
+    PassKeeper_state_t Passkeeper_state;
 };
 #endif //PASS_KEEPER_H

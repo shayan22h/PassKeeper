@@ -2,7 +2,7 @@
 #include "PassKeeper.h"
 
 #define MAX_NO_EVENTS_SUPPORTED 5
-PassKeeper::PassKeeper()
+PassKeeper::PassKeeper():Passkeeper_state(PassKeeper_idle)
 {
     Event_Table_Entry_Cnt = 0;
     for (uint8_t i= 0; i < MAX_NO_EVENTS_SUPPORTED; i++)
@@ -17,6 +17,27 @@ PassKeeper::PassKeeper()
 PassKeeper::~PassKeeper()
 {
 
+}
+
+/*
+*   @brief: The state Machine of PassKeeper Logic controller
+*   @param[in]: _event_id  event requested by user
+*   @return status(bool) true valid event id in accordance with state
+                         false invalid event id in accordance with state
+*/
+bool PassKeeper::PassKeeper_StateMachine_Handler(Event_Id_t _event_id)
+{
+    bool status = false;
+    if(Passkeeper_state == PassKeeper_idle && _event_id == Event_Authenticate)
+    {
+        status = true;
+        Passkeeper_state = PassKeeper_Authenticated;
+    }
+    else if (Passkeeper_state == PassKeeper_Authenticated)
+    {
+
+    }
+    return status;
 }
 
 bool PassKeeper::Subscribe_To_PassKeeper(Event_Id_t _event_id, const string& _pToStr,
@@ -63,7 +84,17 @@ void PassKeeper::AppCenter_FW_msg_To_PassKeeper(const string& _refToReq,
         if (Event_Table[i].PtrToStr && _refToReq == *(Event_Table[i].PtrToStr) 
         && Event_Table[i].Callback)
         {
-            status = Event_Table[i].Callback(Event_Table[i].Event_Id, _refToResp);
+            //Pass Keeper Controller State Machine
+            if (PassKeeper_StateMachine_Handler(Event_Table[i].Event_Id))
+            {
+                // Dispatch The Callback to the right component 
+                status = Event_Table[i].Callback(Event_Table[i].Event_Id, _refToResp);
+            }
+            else
+            {
+                status = stats_invalid_request;
+                _refToResp = "Invalid Request";
+            }
             break;
         }
     }
@@ -72,7 +103,7 @@ void PassKeeper::AppCenter_FW_msg_To_PassKeeper(const string& _refToReq,
         #ifdef DEBUG
         cout<< "[Pass Keeper] No matching event found: " <<  endl;
         #endif
-        _refToResp = "Invalid Request";
+        _refToResp = "Match not found";
     }
     
 }
