@@ -23,7 +23,8 @@ SRCS = ../main.cpp \
 	   ../AppCenter/AppCenter.cpp \
 	   ../UI/UI.cpp \
 	   ../PassKeeper/PassKeeper.cpp \
-	   ../PassKeeper/Authenticator/Authenticator.cpp 
+	   ../PassKeeper/Authenticator/Authenticator.cpp \
+	   ../PassKeeper/XmlHandler/XmlHandler.cpp 
 
 # Object files
 OBJS = $(patsubst ../%.cpp,$(OUTPUT_DIR)/%.o,$(SRCS))
