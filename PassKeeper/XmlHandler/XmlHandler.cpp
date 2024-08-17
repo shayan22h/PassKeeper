@@ -8,7 +8,7 @@ PassKeeperRefObj(_refToPassKeeper)
     // Register Callbacks for XML Handler Events
     PassKeeperRefObj.Subscribe_To_PassKeeper(
         Event_GetPass, xmlHandler_message,
-        [this](Event_Id_t event_id ,std::string& rsp_str){
+        [this](Event_Id_t event_id ,std::string& req_str,std::string& rsp_str){
             return this->ProcessXmlHandleEvent(rsp_str, event_id);
         }
     );

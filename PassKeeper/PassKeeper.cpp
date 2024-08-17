@@ -41,7 +41,7 @@ bool PassKeeper::PassKeeper_StateMachine_Handler(Event_Id_t _event_id)
 }
 
 bool PassKeeper::Subscribe_To_PassKeeper(Event_Id_t _event_id, const string& _pToStr,
-    function <Event_Status(Event_Id_t, string&)> _callback)
+    function <Event_Status(Event_Id_t,string&, string&)> _callback)
 {
     bool status = false;
 #ifdef DEBUG
@@ -79,16 +79,25 @@ void PassKeeper::AppCenter_FW_msg_To_PassKeeper(const string& _refToReq,
     #endif
     Event_Status status = status_match_not_found;
 
+    size_t spacePos = _refToReq.find(' ');
+    string payloadStr = "";
+    string headerStr = _refToReq;
+    if (spacePos != string::npos)
+    {
+        headerStr = _refToReq.substr(0, spacePos);
+        payloadStr = _refToReq.substr(spacePos + 1);
+    }
+
     for (uint8_t i= 0; i <MAX_NO_EVENTS_SUPPORTED; i++)
     {
-        if (Event_Table[i].PtrToStr && _refToReq == *(Event_Table[i].PtrToStr) 
+        if (Event_Table[i].PtrToStr && headerStr == *(Event_Table[i].PtrToStr) 
         && Event_Table[i].Callback)
         {
             //Pass Keeper Controller State Machine
             if (PassKeeper_StateMachine_Handler(Event_Table[i].Event_Id))
             {
                 // Dispatch The Callback to the right component 
-                status = Event_Table[i].Callback(Event_Table[i].Event_Id, _refToResp);
+                status = Event_Table[i].Callback(Event_Table[i].Event_Id, payloadStr, _refToResp);
             }
             else
             {

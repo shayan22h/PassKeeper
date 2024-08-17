@@ -8,7 +8,7 @@ class Authenticator{
     public:
     ~Authenticator();
     Authenticator(int _typeOfAuthentication, PassKeeper& _refToPassKeeper);
-    Event_Status ProcessAuthentication(string& ref_rsp_str,Event_Id_t event_id);
+    Event_Status ProcessAuthentication(string& refToPayloadReq , string& ref_rsp_str,Event_Id_t event_id);
     
     private:
     int typeOfAuthentication;

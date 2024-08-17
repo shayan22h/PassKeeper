@@ -26,9 +26,7 @@ typedef enum{
 typedef struct{
     const string* PtrToStr;
     Event_Id_t Event_Id;
-    function <Event_Status(Event_Id_t, string&)> Callback;
-
-
+    function <Event_Status(Event_Id_t,string&, string&)> Callback;
 }Event_Table_t;
 
 class PassKeeper{
@@ -39,7 +37,7 @@ class PassKeeper{
     void AppCenter_FW_msg_To_PassKeeper(const string& _refToReq,
     string& _refToResp);
     bool Subscribe_To_PassKeeper(Event_Id_t _event_id, const string& _pToStr,
-    function <Event_Status(Event_Id_t, string&)> _callback);
+    function <Event_Status(Event_Id_t, string&, string&)> _callback);
 
     private:
     Event_Table_t Event_Table[5];
