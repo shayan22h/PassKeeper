@@ -18,24 +18,31 @@ PassKeeper::~PassKeeper()
 {
 
 }
-
+void PassKeeper::update_state(Event_Id_t _event_id, Event_Status _event_status)
+{
+    if( _event_id == Event_Authenticate && _event_status == status_success)
+    {
+        Passkeeper_state = PassKeeper_Authenticated;
+    }
+}
 /*
 *   @brief: The state Machine of PassKeeper Logic controller
 *   @param[in]: _event_id  event requested by user
 *   @return status(bool) true valid event id in accordance with state
                          false invalid event id in accordance with state
 */
-bool PassKeeper::PassKeeper_StateMachine_Handler(Event_Id_t _event_id)
+bool PassKeeper::check_state(Event_Id_t _event_id)
 {
     bool status = false;
     if(Passkeeper_state == PassKeeper_idle && _event_id == Event_Authenticate)
     {
         status = true;
-        Passkeeper_state = PassKeeper_Authenticated;
     }
-    else if (Passkeeper_state == PassKeeper_Authenticated)
+    // Once you are Authenticated no need to process any Request for Authentication
+    else if (Passkeeper_state == PassKeeper_Authenticated 
+    && _event_id != Event_Authenticate)
     {
-
+        status = true;
     }
     return status;
 }
@@ -94,10 +101,11 @@ void PassKeeper::AppCenter_FW_msg_To_PassKeeper(const string& _refToReq,
         && Event_Table[i].Callback)
         {
             //Pass Keeper Controller State Machine
-            if (PassKeeper_StateMachine_Handler(Event_Table[i].Event_Id))
+            if (check_state(Event_Table[i].Event_Id))
             {
                 // Dispatch The Callback to the right component 
                 status = Event_Table[i].Callback(Event_Table[i].Event_Id, payloadStr, _refToResp);
+                update_state(Event_Table[i].Event_Id, status);
             }
             else
             {

@@ -23,7 +23,7 @@ Event_Status Authenticator::ProcessAuthentication(string& refToPayloadReq, strin
     (void)event_id; // Suppress unused parameter warning
     Event_Status status = status_fail;
 
-    if (refToPayloadReq == " Tehran")
+    if (refToPayloadReq == "tehran")
     {
         ref_rsp_str = "Authentication Approved ";
         status = status_success;

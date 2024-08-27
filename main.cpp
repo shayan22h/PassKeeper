@@ -6,6 +6,7 @@
 #include "UI/UI.h"
 #include "PassKeeper/PassKeeper.h"
 #include "PassKeeper/Authenticator/Authenticator.h"
+#include "PassKeeper/XmlHandler/XmlHandler.h"
 using namespace std;
 int main() {
 
@@ -18,6 +19,7 @@ int main() {
 
     // Create the Pass Keeper Application -> Components
     Authenticator AuthHandler(2,PassKeeper);
+    XmlHandler XmlHandlerObj(PassKeeper);
 
     AppCenter.SetPassKeeper(&PassKeeper);
     AppCenter.SetUI(&UIHandler);

@@ -42,7 +42,8 @@ class PassKeeper{
     private:
     Event_Table_t Event_Table[5];
     uint8_t Event_Table_Entry_Cnt;
-    bool PassKeeper_StateMachine_Handler(Event_Id_t _event_id);
+    bool check_state(Event_Id_t _event_id);
+    void update_state(Event_Id_t _event_id, Event_Status _event_status);
     PassKeeper_state_t Passkeeper_state;
 };
 #endif //PASS_KEEPER_H

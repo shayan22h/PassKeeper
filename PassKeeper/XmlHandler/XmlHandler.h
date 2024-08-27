@@ -12,7 +12,7 @@ class XmlHandler{
     private:
     static const string xmlHandler_message;
     PassKeeper& PassKeeperRefObj;
-    Event_Status ProcessXmlHandleEvent(string& ref_rsp_str,Event_Id_t event_id);
+    Event_Status ProcessXmlHandleEvent(Event_Id_t event_id,string& req_str, string& ref_rsp_str);
 
 
 };
